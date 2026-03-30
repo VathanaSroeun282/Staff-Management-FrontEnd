@@ -21,56 +21,50 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
+import { DepartmentAPI } from '@/end points/EndPointLinks'
+import type { DepartmentWrite } from '@/types/Department'
 
-interface Department {
-  id?: number
-  name: string
-}
 
 export default defineComponent({
   setup() {
-    const department = ref<Department>({ name: '' })
+    const department = ref<DepartmentWrite>({
+      departmentID: 0,
+      departmentName: ''
+    })
+
     const isEdit = ref(false)
     const route = useRoute()
     const router = useRouter()
 
-    const fetchDepartment = async (id: number) => {
-      const res = await axios.get(`http://localhost:5212/api/Department/GetDepartmentById/${id}`)
+    const fetchADepartment = async (id: number) => {
+      const res = await axios.get<DepartmentWrite>(`${DepartmentAPI}/${id}`)
       department.value = res.data
     }
 
     const handleSubmit = async () => {
-  try {
-    const config = { headers: { 'Content-Type': 'application/json' } }
+      try {
+        if (isEdit.value) {
+          await axios.put(`${DepartmentAPI}/${department.value.departmentID}`, {
+            name: department.value.departmentName
+          })
+        } else {
+          await axios.post(DepartmentAPI, {
+            name: department.value.departmentName
+          })
+        }
 
-    if (isEdit.value && department.value.id) {
-      // PUT request with departmentName as query parameter, no body
-      await axios.put(
-        `http://localhost:5212/api/Department/UpdateDepartment/${department.value.id}?departmentName=${encodeURIComponent(department.value.name)}`,
-        null,
-        config
-      )
-    } else {
-      // POST request with department name in JSON body
-      await axios.post(
-        `http://localhost:5212/api/Department/AddDepartment`,
-        { name: department.value.name },
-        config
-      )
+        router.push('/departments')
+      } catch (err) {
+        console.error(err)
+        alert('Error occurred.')
+      }
     }
 
-    router.push('/departments')
-  } catch (err) {
-    console.error(err)
-    alert('ERRRRRRRRR — check the console for details')
-  }
-}
-
     onMounted(() => {
-      const id = route.params.id
+      const id = Number(route.params.id)
       if (id) {
         isEdit.value = true
-        fetchDepartment(Number(id))
+        fetchADepartment(id)
       }
     })
 

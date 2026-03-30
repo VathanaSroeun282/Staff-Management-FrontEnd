@@ -5,3 +5,7 @@ export interface Department{
 export interface DepartmentWithEmployees extends Department {
   employeeNames: string[]
 }
+export interface DepartmentWrite{
+  departmentID ?: number,
+  departmentName: string
+}
