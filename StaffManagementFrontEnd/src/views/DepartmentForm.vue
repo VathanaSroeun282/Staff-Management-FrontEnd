@@ -4,7 +4,7 @@
     <form @submit.prevent="handleSubmit">
       <div class="mb-4">
         <label class="block font-medium mb-1">Department Name</label>
-        <input v-model="department.name" type="text" class="w-full border rounded px-3 py-2" required />
+        <input v-model="department.departmentName" type="text" class="w-full border rounded px-3 py-2" required />
       </div>
 
       <div class="mt-6 flex justify-between">
@@ -44,12 +44,13 @@ export default defineComponent({
     const handleSubmit = async () => {
       try {
         if (isEdit.value) {
-          await axios.put(`${DepartmentAPI}/${department.value.departmentID}`, {
-            name: department.value.departmentName
+          await axios.put(DepartmentAPI, {
+            departmentID: department.value.departmentID,
+            departmentName: department.value.departmentName
           })
         } else {
           await axios.post(DepartmentAPI, {
-            name: department.value.departmentName
+            departmentName: department.value.departmentName
           })
         }
 

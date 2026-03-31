@@ -93,6 +93,17 @@ curl -X 'POST' \
   "departmentName": "string"
 }'
 
+--Update Department
+curl -X 'PUT' \
+  'http://localhost:5016/api/Department' \
+  -H 'accept: *//*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "departmentID": 0,
+  "departmentName": "string"
+}'
+
+
 --Get a department By ID
 curl -X 'GET' \
   'http://localhost:5016/api/Department/1' \
