@@ -1,6 +1,7 @@
 export interface Attandance{
-    AttandanceID ?: number,
-    ClockInTime : string,
-    ClockOutTime : string,
-    EmployeeID: number
-}               
+    attendanceID: number,
+    clockInTime: string,
+    clockOutTime: string,
+    employeeID: number,
+    employeeName: string
+}

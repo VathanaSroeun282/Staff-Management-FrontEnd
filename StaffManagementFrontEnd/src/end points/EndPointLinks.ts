@@ -1,5 +1,5 @@
 //ALLS END POINTS
-export const AttendanceENDPOINT = "http://localhost:5016/api/Attendance";
+export const AttendanceAPI = "http://localhost:5016/api/Attendance";
 export const AuditLogAPI = "http://localhost:5016/api/AuditLog";
 export const DepartmentAPI = "http://localhost:5016/api/Department";
 export const EmployeeAPI = "http://localhost:5016/api/Employee";
