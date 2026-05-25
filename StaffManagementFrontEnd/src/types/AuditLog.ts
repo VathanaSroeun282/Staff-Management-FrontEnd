@@ -12,3 +12,10 @@ export interface AuditLog{
 		"changedBy": 7,
 		"employeeName": "David Lee"
 */
+export interface AuditLog{
+    AuditLogID ?: number,
+    ChangeType : string,
+    ChangeDate : Date,
+    ChangBy : string,
+    EmployeeID : number
+}
