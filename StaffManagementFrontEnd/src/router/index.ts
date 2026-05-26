@@ -6,6 +6,7 @@ import DepartmentForm from '@/views/DepartmentForm.vue'
 import AttendanceList from '@/views/AttendanceList.vue'
 import AttendanceForm from '@/views/AttendanceForm.vue'
 import AuditLogManage from '@/views/AuditLogManage.vue'
+import AuditLogForm from '@/views/AuditLogForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,12 +31,12 @@ const router = createRouter({
     { 
       path: '/auditLogs/create', 
       name: 'audit-log-create',
-      component: AuditLogManage 
+      component: AuditLogForm 
     },
     { 
       path: '/auditLogs/edit/:id', 
       name: 'audit-log-edit',
-      component: AuditLogManage,
+      component: AuditLogForm,
       props: true 
     },
 

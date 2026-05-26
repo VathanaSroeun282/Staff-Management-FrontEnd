@@ -37,7 +37,7 @@
         <tr v-for="auditLog in auditLogs" :key="auditLog.auditLogID">
           <td class="border px-4 py-2">{{ auditLog.auditLogID }}</td>
           <td class="border px-4 py-2">{{ auditLog.changeType }}</td>
-          <td class="border px-4 py-2">{{ auditLog.changeDate }}</td>
+          <td class="border px-4 py-2">{{ formatTime(auditLog.changeDate) }}</td>
           <td class="border px-4 py-2">{{ auditLog.changedBy }}</td>
           <td class="border px-4 py-2">{{ auditLog.employeeName }}</td>
           <td class="border px-4 py-2"> 
@@ -99,7 +99,20 @@ export default defineComponent({
 
     // 🔥 format datetime -> HH:mm
     const formatTime = (datetime: string) => {
-      return datetime?.slice(11, 16)
+      //return datetime?.split("T")[0]
+      const date = new Date(datetime)
+
+      const day = String(date.getDate()).padStart(2, '0')
+
+      const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ]
+
+      const month = months[date.getMonth()]
+      const year = date.getFullYear()
+
+      return `${day}-${month}-${year}`
     }
 
     onMounted(() => {

@@ -1,14 +1,4 @@
 export interface Employee {
-          //   <th class="border px-4 py-2">ID</th>
-          // <th class="border px-4 py-2">Name</th>
-          // <th class="border px-4 py-2">Date of Birth</th>
-          // <th class="border px-4 py-2">Phone</th>
-          // <th class="border px-4 py-2">Email</th>
-          // <th class="border px-4 py-2">Position</th>
-          // <th class="border px-4 py-2">Date Hired</th>
-          // <th class="border px-4 py-2">Status</th>
-          // <th class="border px-4 py-2">Department</th>
-          // <th class="border px-4 py-2">Actions</th>
           employeeID: number,
           firstName: string,
           lastName: string,
