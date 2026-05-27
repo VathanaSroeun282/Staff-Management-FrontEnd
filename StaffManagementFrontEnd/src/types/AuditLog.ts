@@ -5,14 +5,6 @@ export interface AuditLog{
     changedBy : number,
     employeeName : string
 }
-
-export interface AuditLogWrite{
-    auditLogID : number,
-    changeType : string,
-    changeDate : string,
-    changedBy : number,
-    employeeID : number
-}
 /*
 		"auditLogID": 7,
 		"changeType": "Delete",
@@ -20,3 +12,12 @@ export interface AuditLogWrite{
 		"changedBy": 7,
 		"employeeName": "David Lee"
 */
+
+
+export interface AuditLogUpdate{
+    auditLogID : number,
+    changeType : string,
+    changeDate : string,
+    changedBy : number,
+    employeeID : number
+}
