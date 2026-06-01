@@ -31,10 +31,9 @@
         </div>
         <div class="mb-4">
           <label class="block font-medium mb-1">Employee Name</label>
-          <p v-if="isEdit" class="block font-normal mb-1">Current Employee: <span>{{ auditLog.employeeName }}</span></p>
           <br>
           <select
-            v-model="auditLogUpdate.employeeID"
+            v-model="auditLog.employeeName"
             class="w-full border rounded px-3 py-2"
             required
           >
@@ -42,7 +41,7 @@
             <option
               v-for="staff in staffs"
               :key="staff.employeeID"
-              :value="staff.employeeID"
+              :value="`${staff.firstName} ${staff.lastName}`"
             >
               {{ staff.firstName }} {{ staff.lastName }}
             </option>
@@ -79,13 +78,13 @@
           changedBy : 0,
           employeeName : ""
       });
-      const auditLogUpdate = ref<AuditLogUpdate>({
-        auditLogID: 0,
-        changeType: "",
-        changeDate: "",
-        changedBy: 0,
-        employeeID : 0
-      })
+      // const auditLogUpdate = ref<AuditLogUpdate>({
+      //   auditLogID: 0,
+      //   changeType: "",
+      //   changeDate: "",
+      //   changedBy: 0,
+      //   employeeID : 0
+      // })
       const staffs = ref<Employee[]>([])
       const isEdit = ref(false)
       const route = useRoute()
@@ -110,7 +109,6 @@
           ...res.data,
           changeDate: res.data.changeDate.split('T')[0]
         }
-        auditLogUpdate.value = {...res.data, employeeID: getEmployeeIDByName(res.data.employeeName) }
       }
 
       const handleSubmit = async () => {
@@ -153,7 +151,6 @@
         auditLog,
         isEdit,
         staffs,
-        auditLogUpdate,
         handleSubmit
       }
     },
