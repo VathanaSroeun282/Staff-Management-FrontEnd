@@ -1,9 +1,10 @@
 export interface LeaveRequest{
-    LeaveRequestID ?: number,
-    LeaveType : string,
-    StartDate : Date,
-    EndDate : Date,
-    Reason : string,
-    Status : string,
-    EmployeeID : number
+    leaveRequestID: number,
+    leaveType: string,
+    startDate: string,
+    endDate: string,
+    reason: string,
+    status: string,
+    employeeID: number,
+    employeeName: string
 }

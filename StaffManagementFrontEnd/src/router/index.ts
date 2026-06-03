@@ -7,6 +7,7 @@ import AttendanceList from '@/views/AttendanceList.vue'
 import AttendanceForm from '@/views/AttendanceForm.vue'
 import AuditLogManage from '@/views/AuditLogManage.vue'
 import AuditLogForm from '@/views/AuditLogForm.vue'
+import LeaveRequestManange from '@/views/LeaveRequestManange.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +41,12 @@ const router = createRouter({
       props: true 
     },
 
+    //Leave Request
+    { 
+      path: '/leaverequests', 
+      name: 'leave-request-list',
+      component: LeaveRequestManange 
+    },
     //When choose the wrong page, it will redirect to the root page
     {
       path: '/:pathMatch(.*)*',
