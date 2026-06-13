@@ -18,7 +18,17 @@
         </div>
         <div class="mb-4">
           <label class="block font-medium mb-1">Change Type</label>
-          <input v-model="auditLog.changeType" type="text" class="w-full border rounded px-3 py-2" required />
+
+          <select
+            v-model="auditLog.changeType"
+            class="w-full border rounded px-3 py-2"
+            required
+          >
+            <option value="" disabled>Select Change Type</option>
+            <option value="Create">Create</option>
+            <option value="Update">Update</option>
+            <option value="Delete">Delete</option>
+          </select>
         </div>
 
         <div class="mb-4">
@@ -64,7 +74,7 @@
   import { defineComponent, ref, onMounted } from 'vue'
   import axios from 'axios'
   import { useRoute, useRouter } from 'vue-router'
-  import type { AuditLogUpdate, AuditLog } from '@/types/AuditLog'
+  import type { AuditLog } from '@/types/AuditLog'
   import type { Employee } from '@/types/Employee'
   import { AuditLogAPI, EmployeeAPI } from '@/end points/EndPointLinks'
 

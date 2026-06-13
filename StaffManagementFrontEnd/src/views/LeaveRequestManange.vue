@@ -1,8 +1,15 @@
 <template>
-  <div class="p-6">
+  <div v-if="isLoading" class="flex flex-col items-center justify-center min-h-[100vh] gap-4">
+    <img 
+      src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMWM3MnhnOGp4cHgwZ3YyemEwdzZieXUweDZyZHA4eTViNG9tam1ieCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pY8jLmZw0ElqvVeRH4/200w.gif" 
+      class="w-60 h-60"
+    />
+    <h1 class="text-lg font-semibold animate-pulse">Loading...</h1>
+  </div>
+  <div v-else class="p-6">
     <h1 class="text-2xl font-bold mb-4">Leave Request Management</h1>
     <router-link
-      to="/auditLogs/create"
+      to="/leaverequests/create"
       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block"
     >
       + Add Leave Request
@@ -35,7 +42,7 @@
           <td class="border px-4 py-2">{{ leaveR.employeeName }}</td>
           <td class="border px-4 py-2"> 
             <router-link
-              :to="{name:'audit-log-edit',params:{id: leaveR.leaveRequestID}}"
+              :to="{name:'leave-request-edit',params:{id: leaveR.leaveRequestID}}"
               class="text-blue-600 hover:underline"
             >
               Edit
@@ -61,15 +68,15 @@ import type { LeaveRequest } from '@/types/LeaveRequest';
 import { LeaveRequestAPI } from '@/end points/EndPointLinks'
 export default defineComponent({
   setup() {
-    const loading = ref(false)
+    const isLoading = ref(false)
     const leaveRequest = ref<LeaveRequest[]>([])
-    const loadAuditLog = async () => {
-      loading.value = true
+    const loadingLeaveRequest = async () => {
+      isLoading.value = true
       try {
         const res = await axios.get<LeaveRequest[]>(LeaveRequestAPI)
         leaveRequest.value = res.data
       } finally {
-        loading.value = false
+        isLoading.value = false
       }
     }
     const deleteLeaveRequest = async (id: number) => {
@@ -83,7 +90,7 @@ export default defineComponent({
 
       } catch (error) {
         console.error(error)
-        alert('Delete failed')
+        alert('Delete failed: ' + error)
       }
     }
 
@@ -106,15 +113,14 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      loadAuditLog()
+      loadingLeaveRequest()
     })
 
     return {
       leaveRequest,
       deleteLeaveRequest,
-      loading,
+      isLoading,
       formatTime,
-
     }
   },
 })
