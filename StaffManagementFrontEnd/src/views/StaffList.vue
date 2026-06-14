@@ -1,5 +1,12 @@
 <template>
-  <div class="p-6">
+  <div v-if="isLoading" class="flex flex-col items-center justify-center min-h-[100vh] gap-4">
+    <img 
+      src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyMWM3MnhnOGp4cHgwZ3YyemEwdzZieXUweDZyZHA4eTViNG9tam1ieCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pY8jLmZw0ElqvVeRH4/200w.gif" 
+      class="w-60 h-60"
+    />
+    <h1 class="text-lg font-semibold animate-pulse">Loading...</h1>
+  </div>
+  <div v-else class="p-6">
     <h1 class="text-2xl font-bold mb-4">Staff List</h1>
     <router-link to="/staff/create" class="px-4 py-2 rounded bg-green-200 hover:bg-green-700 mb-4 inline-block">
       ➕ Add Staff
@@ -60,6 +67,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const isEdit = ref(false)
+    const isLoading = ref(false)
 
     const fetchDepartments = async () => {
       const res = await axios.get<DepartmentWithEmployees[]>(DepartmentAPI)
@@ -70,8 +78,14 @@ export default defineComponent({
       roles.value = res.data
     }
     const fetchStaffs = async () => {
-      const res = await axios.get<Employee[]>(EmployeeAPI)
-      staffs.value = res.data
+      isLoading.value = true;
+      try{
+        const res = await axios.get<Employee[]>(EmployeeAPI)
+        staffs.value = res.data
+      }
+      finally{
+        isLoading.value = false;
+      }
     }
 
     const formatDate = (dateString: string): string => {
@@ -97,7 +111,8 @@ export default defineComponent({
     return {
       staffs,
       formatDate,
-      deleteStaff
+      deleteStaff,
+      isLoading
     }
   },
 })

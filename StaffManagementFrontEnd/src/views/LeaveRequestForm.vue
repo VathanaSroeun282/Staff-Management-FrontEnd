@@ -8,7 +8,7 @@
   </div>
     <div v-else class="max-w-md mx-auto p-6 bg-white text-black shadow-md rounded-xl mt-8">
       <h1 class="text-2xl font-bold mb-4">
-        {{ isEdit ? 'Edit Audit-Log' : 'Create Audit-Log' }}
+        {{ isEdit ? 'Edit Leave Request' : 'Create New Leave Request' }}
       </h1>
 
       <form @submit.prevent="handleSubmit">
@@ -151,7 +151,7 @@
             startDate: leRequest.value.startDate,
             endDate: leRequest.value.endDate,
             reason: leRequest.value.reason,
-            employeeID: leRequest.value.employeeID
+            employeeID: getEmployeeIDByName(leRequest.value.employeeName)
           }
           if (isEdit.value) {
             await axios.put(`${LeaveRequestAPI}/${leRequest.value.leaveRequestID}`, payload)
@@ -162,7 +162,7 @@
           router.push('/leaverequests')
         } catch (err) {
           console.error(err)
-          alert('Error occurred.')
+          alert('Error occurred: ' + err)
         }
       }
       onMounted(async () => {

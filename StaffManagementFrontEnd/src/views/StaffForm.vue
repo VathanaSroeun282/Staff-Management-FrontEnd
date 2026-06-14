@@ -23,11 +23,26 @@
         <input v-model="staff.dateOfBirth" type="date" class="w-full border rounded px-3 py-2" required />
       </div>
 
-      <!-- Position -->
-      <div class="mb-4">
-        <label class="block font-medium mb-1">Position</label>
-        <input v-model="staff.position" type="text" class="w-full border rounded px-3 py-2" required />
-      </div>
+     <!-- Position -->
+    <div class="mb-4">
+      <label class="block font-medium mb-1">Position</label>
+      <select
+        v-model="staff.position"
+        class="w-full border rounded px-3 py-2"
+        required
+      >
+        <option value="" disabled>Select Position</option>
+        <option value="Accountant">Accountant</option>
+        <option value="Sales Executive">Sales Executive</option>
+        <option value="Legal Advisor">Legal Advisor</option>
+        <option value="Assistant Manager">Assistant Manager</option>
+        <option value="Team Lead">Team Lead</option>
+        <option value="Senior Developer">Senior Developer</option>
+        <option value="Junior Developer">Junior Developer</option>
+        <option value="Customer Support Rep">Customer Support Rep</option>
+        <option value="IT Support">IT Support</option>
+      </select>
+    </div>
 
       <!-- Date Hired -->
       <div class="mb-4">
