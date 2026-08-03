@@ -9,7 +9,7 @@
   <div v-else class="p-6">
     <h1 class="text-2xl font-bold mb-4">Staff List</h1>
     <router-link to="/staff/create" class="px-4 py-2 rounded bg-green-200 hover:bg-green-700 mb-4 inline-block">
-      ➕ Add Staff
+    Create New Staff
     </router-link>
     <table class="table-auto w-full border border-gray-300">
       <thead>
@@ -40,7 +40,10 @@
           <td class="border px-2 py-1">{{ staff.status }}</td>
           <td class="border px-2 py-1">{{ staff.departmentName }}</td>
           <td class="border px-2 py-1">
-            <router-link :to="`/staff/edit/${staff.employeeID}`" class="text-blue-600 hover:underline">Edit</router-link>
+            <router-link 
+              :to="{name: 'staff-edit', params:{ id: staff.employeeID } }" 
+              class="text-blue-600 hover:underline">Edit
+            </router-link>
             <button @click="deleteStaff(staff.employeeID)" class="text-red-600 hover:underline ml-4">Delete</button>
           </td>
         </tr>

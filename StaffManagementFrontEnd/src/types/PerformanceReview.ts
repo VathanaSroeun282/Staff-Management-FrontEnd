@@ -1,7 +1,8 @@
 export interface PerformanceReview{
-    ReviewID ?: number,
-    ReviewDate : Date,
-    Rating : string,
-    Comments : string,
-    EmployeeID : number
+    reviewID: number,
+    reviewDate: string,
+    rating: number,
+    comments: string,
+    employeeID: number,
+    employeeName: string
 }

@@ -2,7 +2,7 @@
   <div class="p-6">
     <h1 class="text-2xl font-bold mb-4">AuditLog Management</h1>
     <router-link
-      to="/auditLogs/create"
+      to="/auditLog/create"
       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block"
     >
       + Add AuditLog
@@ -33,7 +33,7 @@
           <td class="border px-4 py-2">{{ auditLog.employeeName }}</td>
           <td class="border px-4 py-2"> 
             <router-link
-              :to="{name:'audit-log-edit',params:{id: auditLog.auditLogID}}"
+              :to="{ name:'audit-log-edit',params:{id: auditLog.auditLogID } }"
               class="text-blue-600 hover:underline"
             >
               Edit

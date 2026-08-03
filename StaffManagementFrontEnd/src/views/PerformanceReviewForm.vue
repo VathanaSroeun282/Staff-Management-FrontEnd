@@ -6,44 +6,33 @@
     />
     <h1 class="text-lg font-semibold animate-pulse">Loading...</h1>
   </div>
-    <div class="max-w-md mx-auto p-6 bg-white text-black shadow-md rounded-xl mt-8">
+    <div v-else class="max-w-md mx-auto p-6 bg-white text-black shadow-md rounded-xl mt-8">
       <h1 class="text-2xl font-bold mb-4">
-        {{ isEdit ? 'Edit Audit-Log' : 'Create Audit-Log' }}
+        {{ isEdit ? 'Edit Performance Review' : 'Create New Performance Review' }}
       </h1>
 
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
-          <label class="block font-medium mb-1">Audit Log ID</label>
-          <input type="text" v-model="auditLog.auditLogID" disabled class="w-full border rounded px-3 py-2">
+          <label class="block font-medium mb-1">Performance Review ID</label>
+          <input type="text" v-model="performanceReview.reviewID" disabled class="w-full border rounded px-3 py-2">
+        </div>
+        <div class="mb-4" v-if="!isEdit">
+          <label class="block font-medium mb-1">Review Date</label>
+          <input type="date" v-model="performanceReview.reviewDate" class="w-full border rounded px-3 py-2">
         </div>
         <div class="mb-4">
-          <label class="block font-medium mb-1">Change Type</label>
-
-          <select
-            v-model="auditLog.changeType"
-            class="w-full border rounded px-3 py-2"
-            required
-          >
-            <option value="" disabled>Select Change Type</option>
-            <option value="Create">Create</option>
-            <option value="Update">Update</option>
-            <option value="Delete">Delete</option>
-          </select>
-        </div>
-
-        <div class="mb-4">
-          <label class="block font-medium mb-1">Change Date</label>
-          <input v-model="auditLog.changeDate" type="date" class="w-full border rounded px-3 py-2" required />
+          <label class="block font-medium mb-1">Rating</label>
+          <input v-model="performanceReview.rating" type="number" class="w-full border rounded px-3 py-2" required />
         </div>
         <div class="mb-4">
-          <label class="block font-medium mb-1">Changed By</label>
-          <input v-model="auditLog.changedBy" type="number" class="w-full border rounded px-3 py-2" required />
+          <label class="block font-medium mb-1">Comments</label>
+          <input v-model="performanceReview.comments" type="text" class="w-full border rounded px-3 py-2" required />
         </div>
         <div class="mb-4">
           <label class="block font-medium mb-1">Employee Name</label>
           <br>
           <select
-            v-model="auditLog.employeeName"
+            v-model="performanceReview.employeeName"
             class="w-full border rounded px-3 py-2"
             required
           >
@@ -61,8 +50,7 @@
           <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             {{ isEdit ? 'Update' : 'Create' }}
           </button>
-
-          <router-link to="/auditlogs" class="text-gray-600 hover:underline">
+          <router-link to="/performances" class="text-gray-600 hover:underline">
             Cancel
           </router-link>
         </div>
@@ -74,25 +62,28 @@
   import { defineComponent, ref, onMounted } from 'vue'
   import axios from 'axios'
   import { useRoute, useRouter } from 'vue-router'
-  import type { AuditLog } from '@/types/AuditLog'
+  import type { PerformanceReview } from '@/types/PerformanceReview'
   import type { Employee } from '@/types/Employee'
-  import { AuditLogAPI, EmployeeAPI } from '@/end points/EndPointLinks'
+  import { PerformanceReviewAPI, EmployeeAPI } from '@/end points/EndPointLinks'
 
   export default defineComponent({
     setup() {
       const isLoading = ref(true)
-      const auditLog = ref<AuditLog>({
-          auditLogID : 0,
-          changeType : "",
-          changeDate : "",
-          changedBy : 0,
-          employeeName : ""
+      const performanceReview = ref<PerformanceReview>({
+        reviewID: 0,
+        reviewDate: "",
+        rating: 0,
+        comments: "",
+        employeeID: 0,
+        employeeName: ""
       });
+
+//------Default Variable
       const staffs = ref<Employee[]>([])
       const isEdit = ref(false)
       const route = useRoute()
       const router = useRouter()
-
+//------Default functions
       const fetchStaffs = async () => {
         const res = await axios.get<Employee[]>(EmployeeAPI)
         staffs.value = res.data
@@ -105,44 +96,47 @@
         })
         return staff ? staff.employeeID : 0
       }
- 
-      const fetchAuditLog = async (id: number) => {
-        const res = await axios.get<AuditLog>(`${AuditLogAPI}/${id}`)
-        auditLog.value = {
+/////Core fuction related to this actions
+      const fetchPerformanceReviewByID = async (id: number) => {
+        const res = await axios.get<PerformanceReview>(`${PerformanceReviewAPI}/${id}`)
+        performanceReview.value = {
           ...res.data,
-          changeDate: res.data.changeDate.split('T')[0]
+          reviewDate: res.data.reviewDate.split('T')[0],
         }
       }
 
       const handleSubmit = async () => {
         try {
-          const employeeID = getEmployeeIDByName(auditLog.value.employeeName);
-          const payload = {
-            changeType: auditLog.value.changeType,
-            changeDate: auditLog.value.changeDate,
-            changedBy: auditLog.value.changedBy,
-            employeeID: employeeID
+          const payload1 = {
+            reviewDate: performanceReview.value.reviewDate,
+            rating: performanceReview.value.rating,
+            comments: performanceReview.value.comments,
+            employeeID: getEmployeeIDByName(performanceReview.value.employeeName)
+          }
+          const payload2 = {
+            rating: performanceReview.value.rating,
+            comments: performanceReview.value.comments,
+            employeeID: getEmployeeIDByName(performanceReview.value.employeeName)
           }
           if (isEdit.value) {
-            await axios.put(`${AuditLogAPI}/${auditLog.value.auditLogID}`, payload)
+            await axios.put(`${PerformanceReviewAPI}/${performanceReview.value.reviewID}`, payload2)
           } else {
-            await axios.post(AuditLogAPI, payload)
+            await axios.post(PerformanceReviewAPI, payload1)
           }
 
-          router.push('/auditlogs')
+          router.push('/performances')
         } catch (err) {
           console.error(err)
-          alert('Error occurred.')
+          alert('Error occurred: ' + err)
         }
       }
       onMounted(async () => {
         try{
           await fetchStaffs()
-
           const id = Number(route.params.id)
           if (!isNaN(id) && id > 0) {
             isEdit.value = true
-            await fetchAuditLog(id)
+            await fetchPerformanceReviewByID(id)
           }
         }finally{
           isLoading.value = false;
@@ -151,7 +145,7 @@
 
       return {
         isLoading,
-        auditLog,
+        performanceReview,
         isEdit,
         staffs,
         handleSubmit

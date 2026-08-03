@@ -11,7 +11,7 @@
     <h1 class="text-2xl font-bold mb-4">Attendance List</h1>
 
     <router-link
-      to="/attendances/create"
+      to="/attendance/create"
       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block"
     >
       + Add Attendance
@@ -40,7 +40,7 @@
           <td class="border px-4 py-2">{{ attendance.employeeName }}</td>
           <td class="border px-4 py-2">
             <router-link
-              :to="`/attendances/edit/${attendance.attendanceID}`"
+              :to="{ name:'attendance-edit' ,params:{ id: attendance.attendanceID } }"
               class="text-blue-600 hover:underline"
             >
               Edit

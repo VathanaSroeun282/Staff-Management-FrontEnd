@@ -9,47 +9,45 @@
   <div v-else class="p-6">
     <h1 class="text-2xl font-bold mb-4">Leave Request Management</h1>
     <router-link
-      to="/leaverequest/create"
-      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block"
+      to="/Performance/create"
+      class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block font-semibold"
     >
-      + Add Leave Request
+      Create New Performance Review
     </router-link>
 
     <table class="table-auto w-full border">
       <thead>
         <tr class="bg-gray-200">
           <th class="border px-4 py-2">ID</th>
-          <th class="border px-4 py-2">Leave Type</th>
-          <th class="border px-4 py-2">Start Date</th>
-          <th class="border px-4 py-2">End Date</th>
-          <th class="border px-4 py-2">Reason</th>
-          <th class="border px-4 py-2">Employee Name</th>
+          <th class="border px-4 py-2">Review Date</th>
+          <th class="border px-4 py-2">Rating</th>
+          <th class="border px-4 py-2 text-left">Comment</th>
+          <th class="border px-4 py-2 text-left">Employee Name</th>
           <th class="border px-4 py-2">Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-if="leaveRequest.length === 0">
+        <tr v-if="performanceReviews.length === 0">
           <td colspan="5" class="text-center py-4">No Leave Request found</td>
         </tr>
 
-        <tr v-for="leaveR in leaveRequest" :key="leaveR.leaveRequestID">
-          <td class="border px-4 py-2">{{ leaveR.leaveRequestID }}</td>
-          <td class="border px-4 py-2">{{ leaveR.leaveType }}</td>
-          <td class="border px-4 py-2">{{ formatTime(leaveR.startDate) }}</td>
-          <td class="border px-4 py-2">{{ formatTime(leaveR.endDate) }}</td>
-          <td class="border px-4 py-2">{{ leaveR.reason }}</td>
-          <td class="border px-4 py-2">{{ leaveR.employeeName }}</td>
+        <tr v-for="performanceReview in performanceReviews" :key="performanceReview.reviewID" class="text-center">
+          <td class="border px-4 py-2">{{ performanceReview.reviewID }}</td>
+          <td class="border px-4 py-2">{{ formatTime(performanceReview.reviewDate) }}</td>
+          <td class="border px-4 py-2">{{ performanceReview.rating }}</td>
+          <td class="border px-4 py-2 text-left">{{ performanceReview.comments }}</td>
+          <td class="border px-4 py-2 text-left">{{ performanceReview.employeeName }}</td>
           <td class="border px-4 py-2"> 
             <router-link
-              :to="{name:'leave-request-edit',params:{id: leaveR.leaveRequestID}}"
+              :to="{ name:'performance-edit',params:{id: performanceReview.reviewID}}"
               class="text-blue-600 hover:underline"
             >
               Edit
             </router-link>
 
             <button
-              @click="deleteLeaveRequest(leaveR.leaveRequestID)"
+              @click="deletePerformanceReview(performanceReview.reviewID)"
               class="text-red-600 ml-4"
             >
               Delete
@@ -64,29 +62,29 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import axios from 'axios'
-import type { LeaveRequest } from '@/types/LeaveRequest';
-import { LeaveRequestAPI } from '@/end points/EndPointLinks'
+import type { PerformanceReview } from '@/types/PerformanceReview';
+import { PerformanceReviewAPI } from '@/end points/EndPointLinks';
 export default defineComponent({
   setup() {
     const isLoading = ref(false)
-    const leaveRequest = ref<LeaveRequest[]>([])
-    const loadingLeaveRequest = async () => {
+    const performanceReviews = ref<PerformanceReview[]>([])
+    const loadingPerformanceReview = async () => {
       isLoading.value = true
       try {
-        const res = await axios.get<LeaveRequest[]>(LeaveRequestAPI)
-        leaveRequest.value = res.data
+        const res = await axios.get<PerformanceReview[]>(PerformanceReviewAPI)
+        performanceReviews.value = res.data
       } finally {
         isLoading.value = false
       }
     }
-    const deleteLeaveRequest = async (id: number) => {
-      if (!confirm('Are you sure you want to delete this auditlog?')) return
+    const deletePerformanceReview = async (id: number) => {
+      if (!confirm('Are you sure you want to delete this Performance Review?')) return
 
       try {
-        await axios.delete(`${LeaveRequestAPI}/${id}`)
+        await axios.delete(`${PerformanceReviewAPI}/${id}`)
 
         // 🔥 instant update (no reload)
-        leaveRequest.value = leaveRequest.value.filter(a => a.leaveRequestID !== id)
+        performanceReviews.value = performanceReviews.value.filter(a => a.reviewID !== id)
 
       } catch (error) {
         console.error(error)
@@ -113,12 +111,12 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      loadingLeaveRequest()
+      loadingPerformanceReview()
     })
 
     return {
-      leaveRequest,
-      deleteLeaveRequest,
+      performanceReviews,
+      deletePerformanceReview,
       isLoading,
       formatTime,
     }

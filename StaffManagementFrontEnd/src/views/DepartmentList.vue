@@ -14,7 +14,7 @@
     <h1 class="text-2xl font-bold mb-4">Department List</h1>
 
     <router-link
-      to="/departments/create"
+      to="/department/create"
       class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block"
     >
       + Add Department
@@ -38,7 +38,7 @@
           <td v-else class="border px-4 py-2">{{ department.employeeNames.join(", ") }}</td>
           <td class="border px-4 py-2">
             <router-link
-              :to="`/departments/edit/${department.departmentID}`"
+              :to="{ name:'department-edit',params:{ id: department.departmentID } }"
               class="text-blue-600 hover:underline"
             >
               Edit

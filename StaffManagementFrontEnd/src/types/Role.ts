@@ -1,5 +1,5 @@
 export interface Role{
-    roleID? : number,
+    roleID : number,
     roleName : string
 }
 
